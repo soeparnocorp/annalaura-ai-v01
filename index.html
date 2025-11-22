@@ -1,75 +1,58 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Anna Laura AI</title>
-  <link rel="stylesheet" href="css/style.css">
-  <link rel="stylesheet" href="css/animations.css">
-  <link rel="stylesheet" href="css/responsive.css">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anna Laura AI - SOEPARNO ENTERPRISE</title>
+<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/animations.css">
+<link rel="stylesheet" href="css/responsive.css">
 </head>
 <body>
-  <!-- Background -->
-  <div id="background" class="background"></div>
 
-  <!-- Header -->
-  <header class="header">
-    <h1>Anna Laura AI</h1>
-    <p>The future is in your hands - the challenge is in your path</p>
-  </header>
+<!-- Loader typewriter -->
+<div id="loader">
+  <h1 id="typewriter"></h1>
+</div>
 
-  <!-- Floating Panels for 4 AI Versions -->
-  <main class="panels">
-    <div class="panel" data-version="demo">
-      <h2>Demo</h2>
-      <p>Quick preview AI, safe & lightweight.</p>
-      <button onclick="startChat('demo')">Try Demo</button>
-    </div>
-    <div class="panel" data-version="companion">
-      <h2>Pacar Virtual</h2>
-      <p>Interactive, emotional companion AI.</p>
-      <button onclick="startChat('companion')">Chat Now</button>
-    </div>
-    <div class="panel" data-version="creator">
-      <h2>Content Creator</h2>
-      <p>Assists in idea generation & content workflow.</p>
-      <button onclick="startChat('creator')">Start Creating</button>
-    </div>
-    <div class="panel" data-version="enterprise">
-      <h2>Enterprise</h2>
-      <p>Formal, business-ready AI assistant.</p>
-      <button onclick="startChat('enterprise')">Access Enterprise</button>
-    </div>
-  </main>
+<!-- Binary matrix background -->
+<canvas id="matrix"></canvas>
 
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="footer-links">
-      <a href="#">1</a>
-      <a href="#">2</a>
-      <a href="#">5</a>
-      <a href="#">6</a>
-      <a href="#">7</a>
-      <a href="#">8</a>
-      <a href="#">9</a>
-      <a href="#">10</a>
-    </div>
-    <div class="footer-address">
-      <p>PT. Contoh Perusahaan, Jl. Contoh No. 123, Jakarta, Indonesia</p>
-    </div>
-    <div class="footer-form">
-      <form id="feedbackForm">
-        <input type="text" name="name" placeholder="Nama" required>
-        <input type="email" name="email" placeholder="Email" required>
-        <textarea name="message" placeholder="Kritik & Saran" required></textarea>
-        <button type="submit">Kirim</button>
-      </form>
-    </div>
-  </footer>
+<!-- Header slogan -->
+<header class="header">
+  <p id="slogan">Your AI companion for creativity, business, and fun</p>
+</header>
 
-  <script src="js/main.js"></script>
-  <script src="js/api.js"></script>
-  <script src="js/chat.js"></script>
-  <script src="js/panel.js"></script>
+<!-- Floating Panels for 4 AI Versions -->
+<main class="panels">
+  <div class="panel" data-version="demo">
+    <h2>Demo</h2>
+    <p>Quick preview AI, safe & lightweight.</p>
+    <button onclick="startChat('demo')">Try Demo</button>
+  </div>
+  <div class="panel" data-version="companion">
+    <h2>Pacar Virtual</h2>
+    <p>Interactive, emotional companion AI.</p>
+    <button onclick="startChat('companion')">Chat Now</button>
+  </div>
+  <div class="panel" data-version="creator">
+    <h2>Content Creator</h2>
+    <p>Assists in idea generation & content workflow.</p>
+    <button onclick="startChat('creator')">Start Creating</button>
+  </div>
+  <div class="panel" data-version="enterprise">
+    <h2>Enterprise</h2>
+    <p>Formal, business-ready AI assistant.</p>
+    <button onclick="startChat('enterprise')">Access Enterprise</button>
+  </div>
+</main>
+
+<script src="js/main.js"></script>
+<script src="js/api.js"></script>
+<script src="js/chat.js"></script>
+<script src="js/panel.js"></script>
+<script src="js/matrix.js"></script> <!-- Binary matrix -->
+<script src="js/typewriter.js"></script> <!-- Typewriter loader -->
+
 </body>
 </html>
