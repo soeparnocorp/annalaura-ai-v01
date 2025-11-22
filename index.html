@@ -1,242 +1,268 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Anna Laura AI</title>
-
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Anna Laura AI — SOEPARNO ENTERPRISE</title>
 <style>
-/* Reset */
-*{margin:0;padding:0;box-sizing:border-box;}
-body{
-  background:black;
-  overflow:hidden;
-  font-family: 'Montserrat', sans-serif;
-  color:white;
-}
+  /* ---------- Root / Reset ---------- */
+  :root{
+    --al-white: #EFEFEF;
+    --al-silver: #C0C0C0;
+    --al-mid: #A0A0A0;
+    --bg-black: #000000;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%;background:var(--bg-black);color:var(--al-white);font-family:Inter, "Helvetica Neue", Arial, sans-serif;overflow:hidden}
 
-/* CANVAS MATRIX */
-#matrixCanvas{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100%;
-  z-index:-1;
-}
+  /* ---------- Canvas (matrix) ---------- */
+  canvas#matrixCanvas{
+    position:fixed;inset:0;width:100%;height:100%;z-index:0;display:block;
+  }
 
-/* LOADING SCREEN */
-#loadingScreen{
-  position:fixed;
-  top:0;left:0;
-  width:100%;
-  height:100%;
-  background:black;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-  align-items:center;
-  animation: fadeOut 1s ease forwards;
-  animation-delay:2.8s;
-}
+  /* ---------- Dim overlay to ensure readability ---------- */
+  .matrix-dim{
+    position:fixed;inset:0;z-index:1;pointer-events:none;
+    background: linear-gradient(transparent 28%, rgba(0,0,0,0.25) 100%);
+  }
 
-.loading-title{
-  font-size:2.2rem;
-  font-weight:600;
-  letter-spacing:0.15rem;
-  opacity:0;
-  animation:fadeIn 1.5s ease forwards;
-}
+  /* ---------- LOADING SCREEN ---------- */
+  #loadingScreen{
+    position:fixed;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;gap:14px;
+    background: rgba(0,0,0,0.85);z-index:3;
+  }
 
-.loading-brand{
-  font-size:0.85rem;
-  font-weight:300;
-  letter-spacing:0.12rem;
-  margin-top:10px;
-  opacity:0;
-  animation:fadeIn 1.5s ease forwards;
-  animation-delay:0.3s;
-  opacity:0.75;
-}
+  /* Typewriter title (top of loading) */
+  .loading-typewriter{
+    color:var(--al-white);
+    font-family: "Courier New", monospace;
+    font-size:28px;
+    letter-spacing:0.18rem;
+    overflow:hidden;
+    white-space:nowrap;
+    border-right:2px solid rgba(255,255,255,0.9);
+    width:0;
+    animation:typing 1.9s steps(20) 0.15s forwards, blink 0.8s step-end infinite 2.2s;
+  }
 
-/* Loading bar */
-.loading-bar{
-  width:260px;
-  height:4px;
-  background:rgba(255,255,255,0.2);
-  margin-top:25px;
-  overflow:hidden;
-  border-radius:2px;
-}
-.loading-bar-fill{
-  width:0%;
-  height:100%;
-  background:linear-gradient(90deg, #fff, #cfcfcf);
-  animation:loadFill 2.3s ease forwards;
-}
+  /* progress bar centered between texts */
+  .loading-bar-wrap{
+    width: 320px;
+    height:6px;
+    background: rgba(255,255,255,0.08);
+    border-radius:6px;
+    overflow:hidden;
+    box-shadow:0 0 10px rgba(255,255,255,0.04);
+  }
+  .loading-bar-fill{
+    height:100%;
+    width:0%;
+    background: linear-gradient(90deg, var(--al-white), var(--al-silver));
+    box-shadow:0 0 12px rgba(255,255,255,0.06);
+    transition: width 0.12s linear;
+  }
 
-/* AFTER LOAD MAIN UI */
-#mainUI{
-  opacity:0;
-  animation:fadeIn 1.5s ease forwards;
-  animation-delay:3.0s;
-  position:relative;
-  width:100%;
-  height:100vh;
-  text-align:center;
-  display:flex;
-  flex-direction:column;
-  justify-content:center;
-}
+  /* small brand text under progress (no effects) */
+  .loading-brand{
+    color:var(--al-mid);
+    font-size:12px;
+    letter-spacing:0.12rem;
+    opacity:0.85;
+  }
 
-/* HERO TITLE */
-.hero-title{
-  font-size:3.2rem;
-  font-weight:700;
-  letter-spacing:0.2rem;
-  margin-bottom:25px;
-  text-shadow:0 0 8px rgba(255,255,255,0.2);
-}
+  /* ---------- MAIN UI (hidden until load finished) ---------- */
+  #app{
+    position:relative;z-index:2;display:flex;flex-direction:column;min-height:100vh;
+    background: center / cover no-repeat fixed url('assets/bg.webp');
+  }
 
-/* DEMO BUTTON */
-.demo-btn{
-  display:inline-block;
-  padding:12px 32px;
-  border:2px solid rgba(255,255,255,0.6);
-  border-radius:30px;
-  color:white;
-  font-size:1.1rem;
-  letter-spacing:0.1rem;
-  text-decoration:none;
-  backdrop-filter:blur(4px);
-  background:rgba(255,255,255,0.08);
-  box-shadow:0 0 10px rgba(255,255,255,0.18);
-  transition:.25s;
-}
-.demo-btn:hover{
-  background:white;
-  color:black;
-}
+  /* header: title moved to header */
+  header.app-header{
+    width:100%;padding:22px 18px;text-align:center;
+    background: linear-gradient(rgba(0,0,0,0.20), rgba(0,0,0,0.05));
+    backdrop-filter: blur(2px);
+    z-index:4;
+  }
+  header .title{
+    font-family: Inter, "Segoe UI", Roboto, sans-serif;
+    font-weight:700;
+    letter-spacing:0.22rem;
+    color:var(--al-white);
+    font-size:28px;
+    text-shadow:0 0 8px rgba(255,255,255,0.06);
+  }
 
-/* PACKAGES */
-.packages{
-  position:absolute;
-  bottom:80px;
-  width:100%;
-  display:flex;
-  justify-content:center;
-  gap:25px;
-}
+  /* central hero area: demo button truly centered in viewport */
+  main.hero{
+    flex:1;display:flex;align-items:center;justify-content:center;position:relative;padding:40px;
+  }
+  .center-plate{
+    display:flex;flex-direction:column;align-items:center;gap:18px;z-index:5;
+    text-align:center;
+    /* subtle backdrop so text/buttons stay readable over matrix */
+    background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+    padding:28px;border-radius:14px;
+    backdrop-filter: blur(6px);
+  }
 
-.package-box{
-  padding:18px 30px;
-  background:rgba(255,255,255,0.08);
-  border:1px solid rgba(255,255,255,0.25);
-  border-radius:14px;
-  backdrop-filter:blur(6px);
-  font-size:0.95rem;
-  width:170px;
-  text-align:center;
-}
+  .hero-title{
+    font-size:44px;font-weight:700;letter-spacing:0.18rem;color:var(--al-white);
+    text-shadow:0 0 12px rgba(255,255,255,0.06);
+  }
 
-/* FOOTER */
-.footer{
-  position:absolute;
-  bottom:25px;
-  width:100%;
-  text-align:center;
-  font-size:0.8rem;
-  opacity:0.6;
-}
+  .demo-btn{
+    display:inline-block;padding:14px 36px;border-radius:28px;border:2px solid rgba(255,255,255,0.48);
+    background:rgba(255,255,255,0.04);color:var(--al-white);text-decoration:none;font-weight:600;
+    transition: all .22s ease;cursor:pointer;font-size:16px;
+  }
+  .demo-btn:hover{background:rgba(255,255,255,0.12);color:#000;border-color:rgba(255,255,255,0.9)}
 
-/* ANIMATIONS */
-@keyframes fadeIn{
-  from{opacity:0}
-  to{opacity:1}
-}
-@keyframes fadeOut{
-  from{opacity:1}
-  to{opacity:0; visibility:hidden}
-}
-@keyframes loadFill{
-  from{width:0%}
-  to{width:100%}
-}
+  /* package boxes (3) placed center-bottom but above footer */
+  .packages{
+    position:absolute;left:50%;transform:translateX(-50%);bottom:96px;display:flex;gap:18px;z-index:5;
+  }
+  .pkg{
+    width:170px;padding:18px;border-radius:12px;text-align:center;
+    background:rgba(255,255,255,0.04);
+    border:1px solid rgba(255,255,255,0.06);
+    backdrop-filter: blur(4px);
+    font-size:0.95rem;color:var(--al-white)
+  }
 
-/* RESPONSIVE */
-@media(max-width:768px){
-  .hero-title{font-size:2rem;}
-  .packages{flex-direction:column; bottom:100px;}
-  .package-box{width:60%; margin:0 auto;}
-}
+  /* footer credit centered bottom */
+  footer.app-footer{
+    width:100%;position:relative;z-index:5;padding:14px 12px;text-align:center;
+    background: linear-gradient(rgba(0,0,0,0.00), rgba(0,0,0,0.30));
+  }
+  footer .credit{font-size:12px;color:var(--al-mid)}
+
+  /* ---------- small screens ---------- */
+  @media (max-width:760px){
+    .loading-typewriter{font-size:20px;}
+    .loading-bar-wrap{width:70%}
+    .hero-title{font-size:28px}
+    .packages{bottom:120px;flex-direction:column;gap:12px}
+    .pkg{width:70%}
+  }
+
+  /* ---------- keyframes ---------- */
+  @keyframes typing { from { width: 0 } to { width: 220px } }
+  @keyframes blink { 50% { border-color: transparent } }
+
 </style>
 </head>
 <body>
 
-<canvas id="matrixCanvas"></canvas>
+<!-- MATRIX CANVAS -->
+<canvas id="matrixCanvas" aria-hidden="true"></canvas>
+<div class="matrix-dim" aria-hidden="true"></div>
 
-<!-- LOADING -->
-<div id="loadingScreen">
-    <div class="loading-title">Anna Laura AI</div>
-    <div class="loading-brand">© 2025 SOEPARNO ENTERPRISE Corp.</div>
+<!-- LOADING LAYER (typewriter top, progress bar middle, brand small bottom) -->
+<div id="loadingScreen" role="status" aria-live="polite">
+  <div class="loading-typewriter" id="loadingType">Anna Laura AI</div>
 
-    <div class="loading-bar">
-        <div class="loading-bar-fill"></div>
-    </div>
+  <div class="loading-bar-wrap" aria-hidden="true">
+    <div class="loading-bar-fill" id="loadingFill"></div>
+  </div>
+
+  <div class="loading-brand">SOEPARNO ENTERPRISE Corp.</div>
 </div>
 
-<!-- MAIN -->
-<div id="mainUI">
-    <div class="hero-title">ANNA LAURA AI</div>
+<!-- APP (background uses assets/bg.webp) -->
+<div id="app" aria-hidden="true">
+  <header class="app-header" role="banner">
+    <div class="title">ANNA LAURA AI</div>
+  </header>
 
-    <a href="#" class="demo-btn">OPEN DEMO</a>
-
-    <div class="packages">
-        <div class="package-box">Personal Version</div>
-        <div class="package-box">Creator Version</div>
-        <div class="package-box">Enterprise Version</div>
+  <main class="hero" role="main">
+    <div class="center-plate" aria-hidden="false">
+      <div class="hero-title">ANNA LAURA AI</div>
+      <a class="demo-btn" id="demoBtn" href="#">OPEN DEMO</a>
     </div>
 
-    <div class="footer">© 2025 SOEPARNO ENTERPRISE Corp.</div>
+    <div class="packages" aria-hidden="false">
+      <div class="pkg">Personal Version</div>
+      <div class="pkg">Creator Version</div>
+      <div class="pkg">Enterprise Version</div>
+    </div>
+  </main>
+
+  <footer class="app-footer" role="contentinfo">
+    <div class="credit">© 2025 SOEPARNO ENTERPRISE Corp.</div>
+  </footer>
 </div>
 
 <script>
-/* MATRIX RAIN (White / Silver) */
-const canvas=document.getElementById("matrixCanvas");
-const ctx=canvas.getContext("2d");
+/* ---------------- Matrix (white/silver) ---------------- */
+const canvas = document.getElementById('matrixCanvas');
+const ctx = canvas.getContext('2d');
+let w = canvas.width = window.innerWidth;
+let h = canvas.height = window.innerHeight;
 
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+const CHARSET = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const FONT = 14;
+let columns = Math.floor(w / FONT);
+let drops = new Array(columns).fill(1);
 
-const chars="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-const fontSize=14;
-const columns=Math.floor(canvas.width / fontSize);
-const drops=new Array(columns).fill(1);
-
-function drawMatrix(){
-  ctx.fillStyle="rgba(0,0,0,0.08)";
-  ctx.fillRect(0,0,canvas.width,canvas.height);
-
-  ctx.fillStyle="rgba(255,255,255,0.7)";
-  ctx.font=fontSize+"px monospace";
-
-  for(let i=0;i<drops.length;i++){
-    const char=chars[Math.floor(Math.random()*chars.length)];
-    ctx.fillText(char, i*fontSize, drops[i]*fontSize);
-
-    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975){
-      drops[i]=0;
-    }
+function drawMatrix() {
+  ctx.fillStyle = "rgba(0,0,0,0.08)";
+  ctx.fillRect(0, 0, w, h);
+  ctx.fillStyle = "rgba(255,255,255,0.74)";
+  ctx.font = FONT + "px monospace";
+  for (let i = 0; i < drops.length; i++) {
+    const c = CHARSET[Math.floor(Math.random() * CHARSET.length)];
+    ctx.fillText(c, i * FONT, drops[i] * FONT);
+    if (drops[i] * FONT > h && Math.random() > 0.975) drops[i] = 0;
     drops[i]++;
   }
 }
+let matrixInterval = setInterval(drawMatrix, 40);
 
-setInterval(drawMatrix, 40);
+window.addEventListener('resize', () => {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+  columns = Math.floor(w / FONT);
+  drops = new Array(columns).fill(1);
+});
 
-window.addEventListener("resize", ()=>{
-  canvas.width=window.innerWidth;
-  canvas.height=window.innerHeight;
+/* ------------- Loading progress logic ------------- */
+const loadingScreen = document.getElementById('loadingScreen');
+const loadingFill = document.getElementById('loadingFill');
+const app = document.getElementById('app');
+const loadingType = document.getElementById('loadingType');
+
+let progress = 0;
+let simulatedSpeed = 4; // average increment per tick
+const tick = 80;
+
+const progressTimer = setInterval(() => {
+  // dynamic feel
+  progress += Math.random() * simulatedSpeed;
+  if (progress > 100) progress = 100;
+  loadingFill.style.width = progress + '%';
+
+  if (progress >= 100) {
+    clearInterval(progressTimer);
+    // fade out loading and reveal app
+    loadingScreen.style.transition = 'opacity 0.9s ease';
+    loadingScreen.style.opacity = 0;
+    setTimeout(() => {
+      loadingScreen.style.display = 'none';
+      // reveal app
+      app.setAttribute('aria-hidden','false');
+      // small delay to ensure background ready
+      app.style.opacity = 1;
+    }, 950);
+  }
+}, tick);
+
+/* ------------- Demo button placeholder (no network) ------------- */
+document.getElementById('demoBtn').addEventListener('click', (e) => {
+  e.preventDefault();
+  // simple placeholder: open demo modal / start chat (to be integrated)
+  alert('Demo trigger — integrate chat backend here.');
 });
 </script>
-
 </body>
 </html>
+```0
