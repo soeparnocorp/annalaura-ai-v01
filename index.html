@@ -4,166 +4,238 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Anna Laura AI</title>
+
 <style>
-  html, body {
-    margin: 0;
-    padding: 0;
-    overflow: hidden;
-    font-family: Arial, sans-serif;
-    background: black;
-    color: #fff;
-    height: 100%;
-  }
-  canvas#matrix {
-    position: fixed;
-    top: 0;
-    left: 0;
-    z-index: 0;
-  }
-  #loadingScreen {
-    position: fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    background:black;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    z-index:2;
-    color:#0f0;
-    font-size:2em;
-    text-align:center;
-  }
-  #progressContainer {
-    width: 60%;
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-    margin-top: 20px;
-  }
-  #progressBar {
-    width: 0%;
-    height: 20px;
-    background: #0f0;
-    border-radius: 10px;
-    transition: width 0.2s;
-  }
-  #mainContent {
-    display:none;
-    position:relative;
-    z-index:1;
-    height:100%;
-    width:100%;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    align-items:center;
-    text-align:center;
-  }
-  h1 {
-    font-size:4em;
-    margin:0;
-  }
-  #demoButton {
-    margin-top:30px;
-    padding:15px 40px;
-    font-size:1.5em;
-    cursor:pointer;
-    border:none;
-    border-radius:5px;
-    background:#0f0;
-    color:#000;
-    transition:0.3s;
-  }
-  #demoButton:hover {
-    background:#0c0;
-  }
-  #premiumBlocks {
-    display:flex;
-    gap:20px;
-    margin-top:50px;
-  }
-  .block {
-    background: rgba(255,255,255,0.1);
-    padding:20px;
-    border-radius:10px;
-    min-width:150px;
-  }
-  footer {
-    margin-top:50px;
-    font-size:0.8em;
-    opacity:0.7;
-  }
+/* Reset */
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  background:black;
+  overflow:hidden;
+  font-family: 'Montserrat', sans-serif;
+  color:white;
+}
+
+/* CANVAS MATRIX */
+#matrixCanvas{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  z-index:-1;
+}
+
+/* LOADING SCREEN */
+#loadingScreen{
+  position:fixed;
+  top:0;left:0;
+  width:100%;
+  height:100%;
+  background:black;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  animation: fadeOut 1s ease forwards;
+  animation-delay:2.8s;
+}
+
+.loading-title{
+  font-size:2.2rem;
+  font-weight:600;
+  letter-spacing:0.15rem;
+  opacity:0;
+  animation:fadeIn 1.5s ease forwards;
+}
+
+.loading-brand{
+  font-size:0.85rem;
+  font-weight:300;
+  letter-spacing:0.12rem;
+  margin-top:10px;
+  opacity:0;
+  animation:fadeIn 1.5s ease forwards;
+  animation-delay:0.3s;
+  opacity:0.75;
+}
+
+/* Loading bar */
+.loading-bar{
+  width:260px;
+  height:4px;
+  background:rgba(255,255,255,0.2);
+  margin-top:25px;
+  overflow:hidden;
+  border-radius:2px;
+}
+.loading-bar-fill{
+  width:0%;
+  height:100%;
+  background:linear-gradient(90deg, #fff, #cfcfcf);
+  animation:loadFill 2.3s ease forwards;
+}
+
+/* AFTER LOAD MAIN UI */
+#mainUI{
+  opacity:0;
+  animation:fadeIn 1.5s ease forwards;
+  animation-delay:3.0s;
+  position:relative;
+  width:100%;
+  height:100vh;
+  text-align:center;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+}
+
+/* HERO TITLE */
+.hero-title{
+  font-size:3.2rem;
+  font-weight:700;
+  letter-spacing:0.2rem;
+  margin-bottom:25px;
+  text-shadow:0 0 8px rgba(255,255,255,0.2);
+}
+
+/* DEMO BUTTON */
+.demo-btn{
+  display:inline-block;
+  padding:12px 32px;
+  border:2px solid rgba(255,255,255,0.6);
+  border-radius:30px;
+  color:white;
+  font-size:1.1rem;
+  letter-spacing:0.1rem;
+  text-decoration:none;
+  backdrop-filter:blur(4px);
+  background:rgba(255,255,255,0.08);
+  box-shadow:0 0 10px rgba(255,255,255,0.18);
+  transition:.25s;
+}
+.demo-btn:hover{
+  background:white;
+  color:black;
+}
+
+/* PACKAGES */
+.packages{
+  position:absolute;
+  bottom:80px;
+  width:100%;
+  display:flex;
+  justify-content:center;
+  gap:25px;
+}
+
+.package-box{
+  padding:18px 30px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:14px;
+  backdrop-filter:blur(6px);
+  font-size:0.95rem;
+  width:170px;
+  text-align:center;
+}
+
+/* FOOTER */
+.footer{
+  position:absolute;
+  bottom:25px;
+  width:100%;
+  text-align:center;
+  font-size:0.8rem;
+  opacity:0.6;
+}
+
+/* ANIMATIONS */
+@keyframes fadeIn{
+  from{opacity:0}
+  to{opacity:1}
+}
+@keyframes fadeOut{
+  from{opacity:1}
+  to{opacity:0; visibility:hidden}
+}
+@keyframes loadFill{
+  from{width:0%}
+  to{width:100%}
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+  .hero-title{font-size:2rem;}
+  .packages{flex-direction:column; bottom:100px;}
+  .package-box{width:60%; margin:0 auto;}
+}
 </style>
 </head>
 <body>
 
-<canvas id="matrix"></canvas>
+<canvas id="matrixCanvas"></canvas>
 
+<!-- LOADING -->
 <div id="loadingScreen">
-  <div>Soeparno Enterprise</div>
-  <div id="progressContainer">
-    <div id="progressBar"></div>
-  </div>
+    <div class="loading-title">Anna Laura AI</div>
+    <div class="loading-brand">© 2025 SOEPARNO ENTERPRISE Corp.</div>
+
+    <div class="loading-bar">
+        <div class="loading-bar-fill"></div>
+    </div>
 </div>
 
-<div id="mainContent">
-  <h1>Anna Laura AI</h1>
-  <button id="demoButton">DEMO</button>
+<!-- MAIN -->
+<div id="mainUI">
+    <div class="hero-title">ANNA LAURA AI</div>
 
-  <div id="premiumBlocks">
-    <div class="block">ALAI Premium A</div>
-    <div class="block">ALAI Premium B</div>
-    <div class="block">ALAI Premium C</div>
-  </div>
+    <a href="#" class="demo-btn">OPEN DEMO</a>
 
-  <footer>© 2025 SOEPARNO ENTERPRISE Corp.</footer>
+    <div class="packages">
+        <div class="package-box">Personal Version</div>
+        <div class="package-box">Creator Version</div>
+        <div class="package-box">Enterprise Version</div>
+    </div>
+
+    <div class="footer">© 2025 SOEPARNO ENTERPRISE Corp.</div>
 </div>
 
 <script>
-  // Matrix rain
-  const canvas = document.getElementById("matrix");
-  const ctx = canvas.getContext("2d");
-  let w = canvas.width = window.innerWidth;
-  let h = canvas.height = window.innerHeight;
+/* MATRIX RAIN (White / Silver) */
+const canvas=document.getElementById("matrixCanvas");
+const ctx=canvas.getContext("2d");
 
-  const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-  const fontSize = 16;
-  const columns = Math.floor(w / fontSize);
-  const drops = Array(columns).fill(1);
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
 
-  function draw() {
-    ctx.fillStyle = "rgba(0,0,0,0.05)";
-    ctx.fillRect(0,0,w,h);
-    ctx.fillStyle = "#fff"; // fallback white
-    ctx.font = fontSize + "px monospace";
-    for(let i=0;i<drops.length;i++){
-      const text = letters.charAt(Math.floor(Math.random()*letters.length));
-      ctx.fillText(text, i*fontSize, drops[i]*fontSize);
-      if(drops[i]*fontSize > h && Math.random() > 0.975) drops[i]=0;
-      drops[i]++;
+const chars="0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize=14;
+const columns=Math.floor(canvas.width / fontSize);
+const drops=new Array(columns).fill(1);
+
+function drawMatrix(){
+  ctx.fillStyle="rgba(0,0,0,0.08)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle="rgba(255,255,255,0.7)";
+  ctx.font=fontSize+"px monospace";
+
+  for(let i=0;i<drops.length;i++){
+    const char=chars[Math.floor(Math.random()*chars.length)];
+    ctx.fillText(char, i*fontSize, drops[i]*fontSize);
+
+    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975){
+      drops[i]=0;
     }
+    drops[i]++;
   }
-  setInterval(draw,33);
+}
 
-  // Loading progress bar
-  const progressBar = document.getElementById("progressBar");
-  const loadingScreen = document.getElementById("loadingScreen");
-  const mainContent = document.getElementById("mainContent");
-  let progress = 0;
-  const progressInterval = setInterval(() => {
-    progress += Math.random() * 5; // random increment for dynamic feel
-    if(progress >= 100) progress = 100;
-    progressBar.style.width = progress + "%";
-    if(progress >= 100){
-      clearInterval(progressInterval);
-      loadingScreen.style.transition = "opacity 1s";
-      loadingScreen.style.opacity = 0;
-      setTimeout(()=>{
-        loadingScreen.style.display = "none";
-        mainContent.style.display = "flex";
-      },1000);
-    }
-  }, 100);
+setInterval(drawMatrix, 40);
+
+window.addEventListener("resize", ()=>{
+  canvas.width=window.innerWidth;
+  canvas.height=window.innerHeight;
+});
 </script>
 
 </body>
