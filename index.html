@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anna Laura AI | Intelligent Assistant</title>
+<style>
+/* RESET & BASE */
+* { margin: 0; padding: 0; box-sizing: border-box; }
+body {
+  font-family: 'Montserrat', sans-serif;
+  background: #000;
+  color: #fff;
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+}
+
+/* MATRIX RAIN BACKGROUND */
+#matrixCanvas {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  z-index: -1;
+  opacity: 0.6;
+}
+
+/* MAIN CONTAINER */
+.main-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+  padding: 25px;
+  max-width: 1300px;
+  margin: 0 auto;
+  position: relative;
+}
+
+/* HEADER */
+.header {
+  padding: 30px 0 50px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  margin-bottom: 40px;
+}
+
+.brand-title {
+  font-size: 3rem;
+  font-weight: 700;
+  margin-bottom: 15px;
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+  letter-spacing: -0.3px;
+}
+
+.tagline {
+  font-size: 1.15rem;
+  opacity: 0.9;
+  max-width: 700px;
+  margin: 0 auto 25px;
+  line-height: 1.5;
+}
+
+.version-badge {
+  display: inline-block;
+  padding: 6px 16px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 16px;
+  font-size: 0.85rem;
+  backdrop-filter: blur(8px);
+  font-weight: 500;
+}
+
+/* CONTENT GRID */
+.content-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 40px;
+  margin-bottom: 50px;
+}
+
+@media (min-width: 1024px) {
+  .content-grid {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: start;
+    gap: 50px;
+  }
+}
+
+/* LEFT COLUMN */
+.left-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 30px;
+}
+
+.promo-text {
+  font-size: 1.05rem;
+  line-height: 1.7;
+  opacity: 0.85;
+}
+
+.highlight {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.07), transparent);
+  padding: 18px 25px;
+  border-left: 2px solid rgba(255, 255, 255, 0.4);
+  margin: 25px 0;
+  font-style: italic;
+  font-size: 1.1rem;
+  opacity: 0.9;
+}
+
+/* DEMO BUTTON */
+.demo-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 15px 35px;
+  background: rgba(255, 255, 255, 0.09);
+  border: 1.5px solid rgba(255, 255, 255, 0.4);
+  border-radius: 30px;
+  color: white;
+  text-decoration: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  backdrop-filter: blur(12px);
+  transition: all 0.25s ease;
+  box-shadow: 0 4px 20px rgba(255, 255, 255, 0.08);
+  margin-top: 10px;
+}
+
+.demo-cta:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.7);
+}
+
+.cta-arrow {
+  font-size: 1.2rem;
+  transition: transform 0.25s;
+}
+
+.demo-cta:hover .cta-arrow {
+  transform: translateX(4px);
+}
+
+/* RIGHT COLUMN - PACKAGES WITH LINKS */
+.right-column {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.packages-title {
+  font-size: 1.5rem;
+  margin-bottom: 8px;
+  opacity: 0.9;
+  font-weight: 600;
+}
+
+.package-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+}
+
+/* PACKAGE CARD AS CLICKABLE LINK */
+.package-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+.package-card {
+  padding: 25px 22px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 16px;
+  backdrop-filter: blur(10px);
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+.package-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.05), transparent);
+  transition: left 0.5s;
+}
+
+.package-card:hover::before {
+  left: 100%;
+}
+
+.package-card:hover {
+  background: rgba(255, 255, 255, 0.09);
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.25);
+  box-shadow: 0 8px 25px rgba(255, 255, 255, 0.07);
+}
+
+.package-icon {
+  font-size: 1.8rem;
+  margin-bottom: 12px;
+  opacity: 0.85;
+}
+
+.package-name {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.package-type {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  margin-bottom: 10px;
+  font-weight: 500;
+}
+
+.package-desc {
+  font-size: 0.9rem;
+  opacity: 0.65;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+/* BADGE FOR VERSION */
+.package-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+  padding: 3px 8px;
+  font-size: 0.7rem;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+/* FEATURES SECTION */
+.features-section {
+  margin-top: 50px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.features-title {
+  font-size: 1.6rem;
+  text-align: center;
+  margin-bottom: 35px;
+  font-weight: 600;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 25px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.feature-item {
+  padding: 22px;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 14px;
+  text-align: center;
+  transition: background 0.25s;
+}
+
+.feature-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.feature-item h4 {
+  font-size: 1.1rem;
+  margin-bottom: 10px;
+  opacity: 0.9;
+  font-weight: 600;
+}
+
+.feature-item p {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  line-height: 1.5;
+}
+
+/* FOOTER */
+.footer {
+  margin-top: 70px;
+  padding-top: 35px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+
+.company-name {
+  font-size: 1.05rem;
+  opacity: 0.8;
+  font-weight: 500;
+}
+
+.copyright {
+  font-size: 0.85rem;
+  opacity: 0.6;
+}
+
+.social-links {
+  display: flex;
+  gap: 18px;
+  margin-top: 8px;
+}
+
+.social-link {
+  color: rgba(255, 255, 255, 0.65);
+  text-decoration: none;
+  font-size: 0.85rem;
+  transition: all 0.2s;
+  padding: 6px 0;
+  position: relative;
+}
+
+.social-link:hover {
+  color: white;
+  opacity: 1;
+}
+
+.social-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 0;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.5);
+  transition: width 0.3s;
+}
+
+.social-link:hover::after {
+  width: 100%;
+}
+
+/* MOBILE RESPONSIVE */
+@media (max-width: 768px) {
+  .main-container {
+    padding: 20px 18px;
+  }
+  
+  .header {
+    padding: 25px 0 40px;
+  }
+  
+  .brand-title {
+    font-size: 2.4rem;
+  }
+  
+  .tagline {
+    font-size: 1.05rem;
+    padding: 0 10px;
+  }
+  
+  .content-grid {
+    gap: 35px;
+  }
+  
+  .demo-cta {
+    padding: 14px 30px;
+    font-size: 1.05rem;
+    align-self: center;
+    width: 100%;
+    justify-content: center;
+    max-width: 280px;
+  }
+  
+  .package-grid {
+    grid-template-columns: 1fr;
+    max-width: 320px;
+    margin: 0 auto;
+  }
+  
+  .features-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .promo-text {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .brand-title {
+    font-size: 2rem;
+  }
+  
+  .header {
+    padding: 20px 0 35px;
+  }
+  
+  .features-title {
+    font-size: 1.4rem;
+  }
+  
+  .packages-title {
+    font-size: 1.3rem;
+    text-align: center;
+  }
+}
+
+/* FOCUS STATES */
+.demo-cta:focus,
+.package-link:focus,
+.social-link:focus {
+  outline: 2px solid rgba(255, 255, 255, 0.5);
+  outline-offset: 2px;
+}
+
+/* LOADING INDICATOR FOR PACKAGE CLICKS */
+.package-loading {
+  display: none;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+
+.package-card.loading .package-loading {
+  display: block;
+}
+
+.package-card.loading .package-content {
+  opacity: 0.3;
+}
+</style>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<canvas id="matrixCanvas"></canvas>
+
+<div class="main-container">
+  
+  <!-- HEADER -->
+  <header class="header">
+    <h1 class="brand-title">ANNA LAURA AI</h1>
+    <p class="tagline">
+      Intelligent assistant designed to understand context, adapt to your workflow, 
+      and enhance creativity through adaptive learning.
+    </p>
+    <span class="version-badge">Context-Aware AI System</span>
+  </header>
+  
+  <!-- MAIN CONTENT GRID -->
+  <div class="content-grid">
+    
+    <!-- LEFT COLUMN -->
+    <div class="left-column">
+      <div class="promo-text">
+        <p>Anna Laura AI represents a new approach to intelligent assistance. Rather than simply responding to commands, it understands context, learns your patterns, and integrates seamlessly into your creative and productive workflows.</p>
+        
+        <div class="highlight">
+          Built on proprietary architecture that prioritizes contextual understanding over rigid command-response patterns.
+        </div>
+        
+        <p>The system evolves with you, offering increasingly relevant assistance while maintaining the flexibility to adapt to new challenges and creative directions.</p>
+      </div>
+      
+      <a href="/direct/demo.html" class="demo-cta">
+        Try Interactive Demo
+        <span class="cta-arrow">→</span>
+      </a>
+    </div>
+    
+    <!-- RIGHT COLUMN - PACKAGES WITH LINKS -->
+    <div class="right-column">
+      <h3 class="packages-title">Available Packages</h3>
+      
+      <div class="package-grid">
+        <!-- PERSONAL VERSION -->
+        <a href="/direct/demo.html?version=personal" class="package-link" data-version="personal">
+          <div class="package-card">
+            <span class="package-badge">BASIC</span>
+            <div class="package-icon">👤</div>
+            <h4 class="package-name">Personal</h4>
+            <div class="package-type">For Individuals</div>
+            <p class="package-desc">Daily AI assistance with creative tools and workflow optimization for personal projects.</p>
+            <div class="package-loading">Loading Personal Demo...</div>
+          </div>
+        </a>
+        
+        <!-- CREATOR VERSION -->
+        <a href="/direct/demo.html?version=creator" class="package-link" data-version="creator">
+          <div class="package-card">
+            <span class="package-badge">PRO</span>
+            <div class="package-icon">🎨</div>
+            <h4 class="package-name">Creator</h4>
+            <div class="package-type">For Professionals</div>
+            <p class="package-desc">Advanced creative tools, collaboration features, and project management integration.</p>
+            <div class="package-loading">Loading Creator Demo...</div>
+          </div>
+        </a>
+        
+        <!-- ENTERPRISE VERSION -->
+        <a href="/direct/demo.html?version=enterprise" class="package-link" data-version="enterprise">
+          <div class="package-card">
+            <span class="package-badge">MAX</span>
+            <div class="package-icon">🏢</div>
+            <h4 class="package-name">Enterprise</h4>
+            <div class="package-type">For Organizations</div>
+            <p class="package-desc">Full AI integration with custom models, API access, security, and dedicated support.</p>
+            <div class="package-loading">Loading Enterprise Demo...</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- FEATURES -->
+  <section class="features-section">
+    <h3 class="features-title">Core Capabilities</h3>
+    
+    <div class="features-grid">
+      <div class="feature-item">
+        <h4>Contextual Intelligence</h4>
+        <p>Understands the context behind requests, not just the literal commands.</p>
+      </div>
+      
+      <div class="feature-item">
+        <h4>Adaptive Learning</h4>
+        <p>Continuously improves responses based on your preferences and patterns.</p>
+      </div>
+      
+      <div class="feature-item">
+        <h4>Workflow Integration</h4>
+        <p>Seamlessly connects with your existing tools and processes.</p>
+      </div>
+      
+      <div class="feature-item">
+        <h4>Creative Enhancement</h4>
+        <p>Amplifies creative output while preserving your unique style and voice.</p>
+      </div>
+    </div>
+  </section>
+  
+  <!-- FOOTER -->
+  <footer class="footer">
+    <div class="company-name">SOEPARNO ENTERPRISE</div>
+    <div class="copyright">© 2025 Intelligent Systems Division. All rights reserved.</div>
+    
+    <div class="social-links">
+      <a href="#" class="social-link">GitHub</a>
+      <a href="#" class="social-link">Documentation</a>
+      <a href="#" class="social-link">Contact</a>
+      <a href="#" class="social-link">Privacy</a>
+    </div>
+  </footer>
+</div>
+
+<script>
+/* MATRIX RAIN */
+const canvas = document.getElementById("matrixCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const chars = "01ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const fontSize = 15;
+const columns = Math.floor(canvas.width / fontSize);
+const drops = Array(columns).fill(1);
+const speeds = Array(columns).fill(0).map(() => Math.random() * 1.5 + 0.8);
+
+function drawMatrix() {
+  ctx.fillStyle = "rgba(0, 0, 0, 0.05)";
+  ctx.fillRect(0, 0, canvas.width, canvas.height);
+  
+  ctx.font = `${fontSize}px 'Courier New', monospace`;
+  
+  for (let i = 0; i < drops.length; i++) {
+    const char = chars[Math.floor(Math.random() * chars.length)];
+    const x = i * fontSize;
+    const y = drops[i] * fontSize;
+    
+    const opacity = Math.max(0.25, 1 - (y / canvas.height) * 1.5);
+    ctx.fillStyle = `rgba(255, 255, 255, ${opacity})`;
+    
+    ctx.fillText(char, x, y);
+    
+    if (y > canvas.height && Math.random() > 0.975) {
+      drops[i] = 0;
+    }
+    
+    drops[i] += speeds[i];
+  }
+}
+
+setInterval(drawMatrix, 45);
+
+window.addEventListener("resize", () => {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+
+drawMatrix();
+
+/* PACKAGE CLICK HANDLING WITH LOADING STATES */
+document.addEventListener('DOMContentLoaded', function() {
+  const packageLinks = document.querySelectorAll('.package-link');
+  
+  packageLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+      const version = this.getAttribute('data-version');
+      const card = this.querySelector('.package-card');
+      
+      // Show loading state
+      card.classList.add('loading');
+      
+      // Log version for future implementation
+      console.log(`Loading ${version} version demo...`);
+      
+      // For now, just proceed to the same demo.html
+      // In the future, this could redirect to different URLs or load different iframe content
+      
+      // Remove loading state after a short delay (simulated)
+      setTimeout(() => {
+        card.classList.remove('loading');
+      }, 800);
+      
+      // Note: The actual navigation happens via href attribute
+      // We're just adding visual feedback here
+    });
+  });
+  
+  // Check for version parameter in URL to show active state
+  const urlParams = new URLSearchParams(window.location.search);
+  const activeVersion = urlParams.get('version');
+  
+  if (activeVersion) {
+    const activeLink = document.querySelector(`.package-link[data-version="${activeVersion}"]`);
+    if (activeLink) {
+      const card = activeLink.querySelector('.package-card');
+      card.style.borderColor = 'rgba(255, 255, 255, 0.5)';
+      card.style.boxShadow = '0 0 20px rgba(255, 255, 255, 0.15)';
+    }
+  }
+});
+</script>
+
+</body>
+</html>
