@@ -1,4 +1,5 @@
-<!DOCTYPE html><html lang="en">
+<!DOCTYPE html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -10,103 +11,297 @@ body{
   background:black;
   color:white;
   overflow-x:hidden;
-}/* CANVAS MATRIX */
+}
+
+/* CANVAS MATRIX */
 #matrixCanvas{
-position:fixed;
-top:0; left:0;
-width:100%; height:100%;
-z-index:-1;
+  position:fixed;
+  top:0; left:0;
+  width:100%; height:100%;
+  z-index:-1;
 }
 
-/* MAIN UI /
+/* MAIN UI CONTAINER */
 #mainUI{
-position: relative;
-width: 100%;
-min-height: 100vh;
-display: flex;
-flex-direction: column;
-align-items: center;
-text-align: center;
-padding: 40px 20px;
-justify-content: flex-start; / header top */
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 40px 20px;
 }
 
-/* HEADER BLOCK */
-.header-block{
-margin-bottom: 40px;
+/* DESKTOP LAYOUT CONTAINER */
+@media (min-width: 1024px) {
+  #mainUI {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 60px 40px;
+    align-items: flex-start;
+    text-align: left;
+  }
+  
+  /* HEADER - Desktop Layout */
+  .header-block {
+    width: 100%;
+    max-width: 800px;
+    margin-bottom: 60px;
+    margin-left: 0;
+    align-self: flex-start;
+  }
+  
+  .hero-title {
+    font-size: 4rem !important;
+    line-height: 1.1;
+    margin-bottom: 20px;
+    text-align: left;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.4rem !important;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    text-align: left;
+    max-width: 700px;
+  }
+  
+  .hero-about {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    max-width: 700px;
+    text-align: left;
+  }
+  
+  /* MIDDLE BLOCK - Desktop Layout */
+  .middle-block {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 60px;
+  }
+  
+  .demo-btn {
+    font-size: 1.3rem;
+    padding: 16px 40px;
+    margin-bottom: 40px;
+    align-self: flex-start;
+  }
+  
+  .packages {
+    justify-content: flex-start;
+    gap: 30px;
+  }
+  
+  .package-box {
+    width: 220px;
+    padding: 22px 30px;
+    font-size: 1.1rem;
+    text-align: center;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .package-box:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
+  }
+  
+  /* FOOTER - Desktop */
+  .footer-block {
+    margin-top: auto;
+    width: 100%;
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 30px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+  }
 }
+
+/* TABLET LAYOUT (Bridge between mobile and desktop) */
+@media (min-width: 768px) and (max-width: 1023px) {
+  #mainUI {
+    padding: 50px 30px;
+  }
+  
+  .hero-title {
+    font-size: 3.5rem !important;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.3rem !important;
+  }
+  
+  .packages {
+    gap: 20px;
+  }
+  
+  .package-box {
+    width: 200px;
+  }
+}
+
+/* MOBILE (existing styles - preserved) */
+@media (max-width: 767px) {
+  /* CANVAS MATRIX */
+  #matrixCanvas{
+    position:fixed;
+    top:0; left:0;
+    width:100%; height:100%;
+    z-index:-1;
+  }
+
+  /* MAIN UI */
+  #mainUI{
+    position: relative;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 40px 20px;
+    justify-content: flex-start;
+  }
+
+  /* HEADER BLOCK */
+  .header-block{
+    margin-bottom: 40px;
+  }
+  .header-block .hero-title{
+    font-size:3.2rem;
+    font-weight:700;
+    margin-bottom:10px;
+    text-shadow:0 0 8px rgba(255,255,255,0.2);
+  }
+  .header-block .hero-subtitle{
+    font-size:1.2rem;
+    margin-bottom:10px;
+    line-height:1.4rem;
+    opacity:0.85;
+  }
+  .header-block .hero-about{
+    font-size:0.95rem;
+    opacity:0.7;
+    max-width:480px;
+    line-height:1.3rem;
+  }
+
+  /* MIDDLE BLOCK */
+  .middle-block{
+    margin-bottom:40px;
+  }
+  .demo-btn{
+    display:inline-block;
+    padding:12px 32px;
+    border:2px solid rgba(255,255,255,0.6);
+    border-radius:30px;
+    color:white;
+    font-size:1.1rem;
+    text-decoration:none;
+    backdrop-filter:blur(4px);
+    background:rgba(255,255,255,0.08);
+    box-shadow:0 0 10px rgba(255,255,255,0.18);
+    transition:.25s;
+    margin-bottom:30px;
+  }
+  .demo-btn:hover{
+    background:white;
+    color:black;
+  }
+  .packages{
+    display:flex;
+    gap:25px;
+    flex-wrap:wrap;
+    justify-content:center;
+  }
+  .package-box{
+    padding:18px 30px;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.25);
+    border-radius:14px;
+    backdrop-filter:blur(6px);
+    width:180px;
+    text-align:center;
+    font-size:0.95rem;
+  }
+
+  /* FOOTER BLOCK */
+  .footer-block{
+    margin-top:auto;
+    font-size:0.8rem;
+    opacity:0.6;
+    text-align:center;
+    padding-bottom:20px;
+  }
+  
+  /* MOBILE RESPONSIVE */
+  @media(max-width:480px){
+    .header-block .hero-title{font-size:2.2rem;}
+    .header-block .hero-subtitle{font-size:1rem;}
+    .packages .package-box{width:100%; max-width:280px;}
+  }
+}
+
+/* GLOBAL STYLES (applied to all screens) */
 .header-block .hero-title{
-font-size:3.2rem;
-font-weight:700;
-margin-bottom:10px;
-text-shadow:0 0 8px rgba(255,255,255,0.2);
+  font-size:3.2rem;
+  font-weight:700;
+  margin-bottom:10px;
+  text-shadow:0 0 8px rgba(255,255,255,0.2);
 }
 .header-block .hero-subtitle{
-font-size:1.2rem;
-margin-bottom:10px;
-line-height:1.4rem;
-opacity:0.85;
+  font-size:1.2rem;
+  margin-bottom:10px;
+  line-height:1.4rem;
+  opacity:0.85;
 }
 .header-block .hero-about{
-font-size:0.95rem;
-opacity:0.7;
-max-width:480px;
-line-height:1.3rem;
+  font-size:0.95rem;
+  opacity:0.7;
+  max-width:480px;
+  line-height:1.3rem;
 }
 
-/* MIDDLE BLOCK */
-.middle-block{
-margin-bottom:40px;
-}
 .demo-btn{
-display:inline-block;
-padding:12px 32px;
-border:2px solid rgba(255,255,255,0.6);
-border-radius:30px;
-color:white;
-font-size:1.1rem;
-text-decoration:none;
-backdrop-filter:blur(4px);
-background:rgba(255,255,255,0.08);
-box-shadow:0 0 10px rgba(255,255,255,0.18);
-transition:.25s;
-margin-bottom:30px;
+  display:inline-block;
+  padding:12px 32px;
+  border:2px solid rgba(255,255,255,0.6);
+  border-radius:30px;
+  color:white;
+  font-size:1.1rem;
+  text-decoration:none;
+  backdrop-filter:blur(4px);
+  background:rgba(255,255,255,0.08);
+  box-shadow:0 0 10px rgba(255,255,255,0.18);
+  transition:.25s;
+  margin-bottom:30px;
 }
 .demo-btn:hover{
-background:white;
-color:black;
+  background:white;
+  color:black;
 }
 .packages{
-display:flex;
-gap:25px;
-flex-wrap:wrap;
-justify-content:center;
+  display:flex;
+  gap:25px;
+  flex-wrap:wrap;
 }
 .package-box{
-padding:18px 30px;
-background:rgba(255,255,255,0.08);
-border:1px solid rgba(255,255,255,0.25);
-border-radius:14px;
-backdrop-filter:blur(6px);
-width:180px;
-text-align:center;
-font-size:0.95rem;
+  padding:18px 30px;
+  background:rgba(255,255,255,0.08);
+  border:1px solid rgba(255,255,255,0.25);
+  border-radius:14px;
+  backdrop-filter:blur(6px);
+  width:180px;
+  text-align:center;
+  font-size:0.95rem;
 }
-
-/* FOOTER BLOCK */
 .footer-block{
-margin-top:auto;
-font-size:0.8rem;
-opacity:0.6;
-text-align:center;
-padding-bottom:20px;
-}
-
-/* RESPONSIVE */
-@media(max-width:768px){
-.header-block .hero-title{font-size:2rem;}
-.header-block .hero-subtitle{font-size:1rem;}
-.packages .package-box{width:60%; margin:0 auto;}
+  margin-top:auto;
+  font-size:0.8rem;
+  opacity:0.6;
+  text-align:center;
+  padding-bottom:20px;
 }
 </style>
 
@@ -126,17 +321,25 @@ padding-bottom:20px;
       built to understand context, anticipate creative needs, and help you 
       construct your own AI Universe.
     </div>
-  </div>  <!-- MIDDLE -->  <div class="middle-block">
-    <a href="direct/demo.html" class="demo-btn">DEMO</a>
+  </div>
+
+  <!-- MIDDLE -->
+  <div class="middle-block">
+    <a href="/direct/demo.html" class="demo-btn">DEMO</a>
     <div class="packages">
       <div class="package-box">Personal Version</div>
       <div class="package-box">Creator Version</div>
       <div class="package-box">Enterprise Version</div>
     </div>
-  </div>  <!-- FOOTER -->  <div class="footer-block">
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer-block">
     © 2025 SOEPARNO ENTERPRISE Corp.
   </div>
-</div><script>
+</div>
+
+<script>
 /* MATRIX RAIN WHITE/SILVER */
 const canvas = document.getElementById("matrixCanvas");
 const ctx = canvas.getContext("2d");
@@ -173,5 +376,7 @@ window.addEventListener("resize", ()=>{
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 });
-</script></body>
+</script>
+
+</body>
 </html>
