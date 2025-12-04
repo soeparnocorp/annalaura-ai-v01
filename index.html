@@ -11,6 +11,7 @@ body{
   background:black;
   color:white;
   overflow-x:hidden;
+  min-height:100vh;
 }
 
 /* CANVAS MATRIX */
@@ -21,248 +22,37 @@ body{
   z-index:-1;
 }
 
-/* MAIN UI CONTAINER */
+/* MAIN UI - FIXED FOR DESKTOP */
 #mainUI{
-  position: relative;
-  width: 100%;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  padding: 40px 20px;
+  position:relative;
+  width:100%;
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:40px 20px;
 }
 
-/* DESKTOP LAYOUT CONTAINER */
-@media (min-width: 1024px) {
-  #mainUI {
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 60px 40px;
-    align-items: flex-start;
-    text-align: left;
-  }
-  
-  /* HEADER - Desktop Layout */
-  .header-block {
-    width: 100%;
-    max-width: 800px;
-    margin-bottom: 60px;
-    margin-left: 0;
-    align-self: flex-start;
-  }
-  
-  .hero-title {
-    font-size: 4rem !important;
-    line-height: 1.1;
-    margin-bottom: 20px;
-    text-align: left;
-  }
-  
-  .hero-subtitle {
-    font-size: 1.4rem !important;
-    line-height: 1.6;
-    margin-bottom: 20px;
-    text-align: left;
-    max-width: 700px;
-  }
-  
-  .hero-about {
-    font-size: 1.1rem;
-    line-height: 1.6;
-    max-width: 700px;
-    text-align: left;
-  }
-  
-  /* MIDDLE BLOCK - Desktop Layout */
-  .middle-block {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    margin-bottom: 60px;
-  }
-  
-  .demo-btn {
-    font-size: 1.3rem;
-    padding: 16px 40px;
-    margin-bottom: 40px;
-    align-self: flex-start;
-  }
-  
-  .packages {
-    justify-content: flex-start;
-    gap: 30px;
-  }
-  
-  .package-box {
-    width: 220px;
-    padding: 22px 30px;
-    font-size: 1.1rem;
-    text-align: center;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-  
-  .package-box:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(255, 255, 255, 0.15);
-  }
-  
-  /* FOOTER - Desktop */
-  .footer-block {
-    margin-top: auto;
-    width: 100%;
-    text-align: center;
-    font-size: 0.9rem;
-    padding: 30px 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
-  }
-}
-
-/* TABLET LAYOUT (Bridge between mobile and desktop) */
-@media (min-width: 768px) and (max-width: 1023px) {
-  #mainUI {
-    padding: 50px 30px;
-  }
-  
-  .hero-title {
-    font-size: 3.5rem !important;
-  }
-  
-  .hero-subtitle {
-    font-size: 1.3rem !important;
-  }
-  
-  .packages {
-    gap: 20px;
-  }
-  
-  .package-box {
-    width: 200px;
-  }
-}
-
-/* MOBILE (existing styles - preserved) */
-@media (max-width: 767px) {
-  /* CANVAS MATRIX */
-  #matrixCanvas{
-    position:fixed;
-    top:0; left:0;
-    width:100%; height:100%;
-    z-index:-1;
-  }
-
-  /* MAIN UI */
-  #mainUI{
-    position: relative;
-    width: 100%;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 40px 20px;
-    justify-content: flex-start;
-  }
-
-  /* HEADER BLOCK */
-  .header-block{
-    margin-bottom: 40px;
-  }
-  .header-block .hero-title{
-    font-size:3.2rem;
-    font-weight:700;
-    margin-bottom:10px;
-    text-shadow:0 0 8px rgba(255,255,255,0.2);
-  }
-  .header-block .hero-subtitle{
-    font-size:1.2rem;
-    margin-bottom:10px;
-    line-height:1.4rem;
-    opacity:0.85;
-  }
-  .header-block .hero-about{
-    font-size:0.95rem;
-    opacity:0.7;
-    max-width:480px;
-    line-height:1.3rem;
-  }
-
-  /* MIDDLE BLOCK */
-  .middle-block{
-    margin-bottom:40px;
-  }
-  .demo-btn{
-    display:inline-block;
-    padding:12px 32px;
-    border:2px solid rgba(255,255,255,0.6);
-    border-radius:30px;
-    color:white;
-    font-size:1.1rem;
-    text-decoration:none;
-    backdrop-filter:blur(4px);
-    background:rgba(255,255,255,0.08);
-    box-shadow:0 0 10px rgba(255,255,255,0.18);
-    transition:.25s;
-    margin-bottom:30px;
-  }
-  .demo-btn:hover{
-    background:white;
-    color:black;
-  }
-  .packages{
-    display:flex;
-    gap:25px;
-    flex-wrap:wrap;
-    justify-content:center;
-  }
-  .package-box{
-    padding:18px 30px;
-    background:rgba(255,255,255,0.08);
-    border:1px solid rgba(255,255,255,0.25);
-    border-radius:14px;
-    backdrop-filter:blur(6px);
-    width:180px;
-    text-align:center;
-    font-size:0.95rem;
-  }
-
-  /* FOOTER BLOCK */
-  .footer-block{
-    margin-top:auto;
-    font-size:0.8rem;
-    opacity:0.6;
-    text-align:center;
-    padding-bottom:20px;
-  }
-  
-  /* MOBILE RESPONSIVE */
-  @media(max-width:480px){
-    .header-block .hero-title{font-size:2.2rem;}
-    .header-block .hero-subtitle{font-size:1rem;}
-    .packages .package-box{width:100%; max-width:280px;}
-  }
-}
-
-/* GLOBAL STYLES (applied to all screens) */
-.header-block .hero-title{
+/* HEADER TITLE */
+.hero-title{
   font-size:3.2rem;
   font-weight:700;
   margin-bottom:10px;
   text-shadow:0 0 8px rgba(255,255,255,0.2);
 }
-.header-block .hero-subtitle{
+
+/* SUBTITLE */
+.hero-subtitle{
   font-size:1.2rem;
-  margin-bottom:10px;
+  margin-bottom:30px;
   line-height:1.4rem;
   opacity:0.85;
-}
-.header-block .hero-about{
-  font-size:0.95rem;
-  opacity:0.7;
-  max-width:480px;
-  line-height:1.3rem;
+  max-width:600px;
 }
 
+/* DEMO BUTTON */
 .demo-btn{
   display:inline-block;
   padding:12px 32px;
@@ -275,16 +65,20 @@ body{
   background:rgba(255,255,255,0.08);
   box-shadow:0 0 10px rgba(255,255,255,0.18);
   transition:.25s;
-  margin-bottom:30px;
+  margin-bottom:40px;
 }
 .demo-btn:hover{
   background:white;
   color:black;
 }
+
+/* PACKAGES */
 .packages{
   display:flex;
   gap:25px;
   flex-wrap:wrap;
+  justify-content:center;
+  margin-bottom:25px;
 }
 .package-box{
   padding:18px 30px;
@@ -296,47 +90,108 @@ body{
   text-align:center;
   font-size:0.95rem;
 }
-.footer-block{
-  margin-top:auto;
+
+/* FOOTER */
+.footer{
   font-size:0.8rem;
   opacity:0.6;
   text-align:center;
-  padding-bottom:20px;
+  margin-top:20px;
+}
+
+/* ===== DESKTOP FIXES ===== */
+@media (min-width: 1024px) {
+  #mainUI {
+    justify-content: flex-start;
+    padding-top: 15vh;
+  }
+  
+  .hero-title {
+    font-size: 4.5rem;
+    margin-bottom: 20px;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.5rem;
+    line-height: 1.6;
+    margin-bottom: 50px;
+    max-width: 800px;
+  }
+  
+  .demo-btn {
+    padding: 16px 45px;
+    font-size: 1.3rem;
+    margin-bottom: 60px;
+  }
+  
+  .packages {
+    gap: 40px;
+    margin-bottom: 40px;
+  }
+  
+  .package-box {
+    width: 220px;
+    padding: 22px 35px;
+    font-size: 1.1rem;
+  }
+  
+  .footer {
+    position: absolute;
+    bottom: 40px;
+    left: 0;
+    width: 100%;
+    font-size: 0.9rem;
+  }
+}
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1023px) {
+  .hero-title {
+    font-size: 3.8rem;
+  }
+  
+  .hero-subtitle {
+    font-size: 1.3rem;
+    max-width: 700px;
+  }
+  
+  .packages {
+    gap: 30px;
+  }
+  
+  .package-box {
+    width: 200px;
+  }
+}
+
+/* Mobile */
+@media (max-width: 768px){
+  .hero-title{font-size:2.5rem;}
+  .hero-subtitle{font-size:1.1rem;}
+  .package-box{width:80%; max-width:250px; margin:0 auto;}
 }
 </style>
-
 </head>
-<body><canvas id="matrixCanvas"></canvas>
+<body>
+
+<canvas id="matrixCanvas"></canvas>
 
 <div id="mainUI">
-  <!-- HEADER -->
-  <div class="header-block">
-    <div class="hero-title">ANNA LAURA AI</div>
-    <div class="hero-subtitle">
-      Intelligent AI that understands your needs<br>
-      In helping your creativity and productivity.
-    </div>
-    <div class="hero-about">
-      An adaptive intelligence designed to evolve with your workflow — 
-      built to understand context, anticipate creative needs, and help you 
-      construct your own AI Universe.
-    </div>
+  <div class="hero-title">ANNA LAURA AI</div>
+  <div class="hero-subtitle">
+    Intelligent AI that understands your needs<br>
+   In helping your creativity and productivity.
   </div>
 
-  <!-- MIDDLE -->
-  <div class="middle-block">
-    <a href="/direct/demo.html" class="demo-btn">DEMO</a>
-    <div class="packages">
-      <div class="package-box">Personal Version</div>
-      <div class="package-box">Creator Version</div>
-      <div class="package-box">Enterprise Version</div>
-    </div>
+  <a href="/direct/demo.html" class="demo-btn">DEMO</a>
+
+  <div class="packages">
+    <div class="package-box">Personal Version</div>
+    <div class="package-box">Creator Version</div>
+    <div class="package-box">Enterprise Version</div>
   </div>
 
-  <!-- FOOTER -->
-  <div class="footer-block">
-    © 2025 SOEPARNO ENTERPRISE Corp.
-  </div>
+  <div class="footer">© 2025 SOEPARNO ENTERPRISE Corp.</div>
 </div>
 
 <script>
