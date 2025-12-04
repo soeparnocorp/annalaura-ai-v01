@@ -1,0 +1,180 @@
+<!DOCTYPE html><html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anna Laura AI</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:'Montserrat',sans-serif;
+  background:black;
+  color:white;
+  overflow:hidden;
+}/* CANVAS MATRIX */
+#matrixCanvas{
+position:fixed;
+top:0; left:0;
+width:100%; height:100%;
+z-index:-1;
+}
+
+/* MAIN UI */
+#mainUI{
+position:relative;
+width:100%;
+height:100vh;
+display:flex;
+flex-direction:column;
+justify-content:center;
+align-items:center;
+text-align:center;
+}
+
+/* HEADER TITLE */
+.hero-title{
+font-size:3.2rem;
+font-weight:700;
+margin-bottom:10px;
+text-shadow:0 0 10px rgba(255,255,255,0.25);
+}
+
+/* SUBTITLE */
+.hero-subtitle{
+font-size:1.2rem;
+margin-bottom:15px;
+line-height:1.4rem;
+opacity:0.85;
+}
+
+/* ABOUT PARAGRAPH */
+.hero-about{
+margin-top:10px;
+font-size:0.95rem;
+opacity:0.7;
+max-width:480px;
+line-height:1.3rem;
+}
+
+/* FADE-IN ANIMATION */
+.fade-in {
+opacity: 0;
+animation: fadeInUp 1.2s ease forwards;
+}
+@keyframes fadeInUp {
+from { opacity: 0; transform: translateY(12px); }
+to { opacity: 1; transform: translateY(0); }
+}
+
+/* DEMO BUTTON */
+.demo-btn{
+display:inline-block;
+padding:12px 32px;
+border:2px solid rgba(255,255,255,0.6);
+border-radius:30px;
+color:white;
+font-size:1.1rem;
+text-decoration:none;
+backdrop-filter:blur(4px);
+background:rgba(255,255,255,0.08);
+box-shadow:0 0 10px rgba(255,255,255,0.18);
+transition:.25s;
+margin-bottom:40px;
+}
+.demo-btn:hover{
+background:white;
+color:black;
+}
+
+/* PACKAGES */
+.packages{
+display:flex;
+gap:25px;
+flex-wrap:wrap;
+justify-content:center;
+margin-bottom:25px;
+}
+.package-box{
+padding:18px 30px;
+background:rgba(255,255,255,0.08);
+border:1px solid rgba(255,255,255,0.25);
+border-radius:14px;
+backdrop-filter:blur(6px);
+width:180px;
+text-align:center;
+font-size:0.95rem;
+}
+
+/* FOOTER */
+.footer{
+font-size:0.8rem;
+opacity:0.6;
+text-align:center;
+}
+
+/* RESPONSIVE */
+@media(max-width:768px){
+.hero-title{font-size:2rem;}
+.hero-subtitle{font-size:1rem;}
+.package-box{width:60%; margin:0 auto;}
+}
+</style>
+
+</head>
+<body><canvas id="matrixCanvas"></canvas>
+
+<div id="mainUI">
+  <div class="hero-title fade-in">ANNA LAURA AI</div>
+  <div class="hero-subtitle fade-in">
+    Intelligent AI that understands your needs<br>
+    In helping your creativity and productivity.
+  </div>
+  <div class="hero-about fade-in">
+    An adaptive intelligence designed to evolve with your workflow — 
+    built to understand context, anticipate creative needs, and help you 
+    construct your own AI Universe.
+  </div><a href="direct/demo.html" class="demo-btn fade-in">DEMO</a>
+
+  <div class="packages fade-in">
+    <div class="package-box">Personal Version</div>
+    <div class="package-box">Creator Version</div>
+    <div class="package-box">Enterprise Version</div>
+  </div>  <div class="footer fade-in">© 2025 SOEPARNO ENTERPRISE Corp.</div>
+</div><script>
+/* MATRIX RAIN WHITE/SILVER */
+const canvas = document.getElementById("matrixCanvas");
+const ctx = canvas.getContext("2d");
+
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+const chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+const fontSize = 14;
+const columns = Math.floor(canvas.width / fontSize);
+const drops = new Array(columns).fill(1);
+
+function drawMatrix(){
+  ctx.fillStyle = "rgba(0,0,0,0.08)";
+  ctx.fillRect(0,0,canvas.width,canvas.height);
+
+  ctx.fillStyle = "rgba(255,255,255,0.7)";
+  ctx.font = fontSize+"px monospace";
+
+  for(let i=0;i<drops.length;i++){
+    const char = chars[Math.floor(Math.random()*chars.length)];
+    ctx.fillText(char, i*fontSize, drops[i]*fontSize);
+
+    if(drops[i]*fontSize > canvas.height && Math.random() > 0.975){
+      drops[i]=0;
+    }
+    drops[i]++;
+  }
+}
+
+setInterval(drawMatrix,40);
+
+window.addEventListener("resize", ()=>{
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+});
+</script></body>
+</html>
